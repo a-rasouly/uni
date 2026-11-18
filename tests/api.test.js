@@ -146,7 +146,7 @@ describe('Task Management API Test Suite', () => {
 
     test('POST /api/v1/tasks creates a new task', async () => {
       const payload = {
-        title: 'Complete Chapter 4 Homework',
+        title: 'Verify Docker Container Deployment',
         description: 'Verify docker container execution',
         status: 'TODO',
         priority: 'HIGH',
@@ -155,7 +155,7 @@ describe('Task Management API Test Suite', () => {
       const res = await request('/api/v1/tasks', { method: 'POST', body: payload });
       assert.equal(res.status, 201);
       assert.equal(res.body.success, true);
-      assert.equal(res.body.data.title, 'Complete Chapter 4 Homework');
+      assert.equal(res.body.data.title, 'Verify Docker Container Deployment');
       createdTaskId = res.body.data.id;
     });
 

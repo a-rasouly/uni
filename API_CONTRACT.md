@@ -1,5 +1,5 @@
 # API Contract & System Architecture
-## Coursework Activity - Chapter 3
+## Technical Specification & Architecture Design
 
 ---
 

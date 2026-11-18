@@ -1,6 +1,5 @@
 # ==========================================
-# University Coursework - Chapter 4
-# Task Management Backend Dockerfile
+# Task Management Backend Service Dockerfile
 # ==========================================
 
 FROM node:20-alpine

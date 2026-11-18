@@ -1,5 +1,5 @@
 /**
- * In-memory data store with thread-safe simulated storage and initial seed data.
+ * In-memory data store with simulated persistence and seed data.
  */
 class DataStore {
   constructor() {
@@ -34,7 +34,7 @@ class DataStore {
       {
         id: 'tsk-201',
         title: 'Initialize Git Repository',
-        description: 'Set up remote, branching model, and meaningful commits for Chapter 2',
+        description: 'Set up remote repository, branching workflow, and initial project structure',
         status: 'DONE',
         priority: 'HIGH',
         assignedUserId: 'usr-101',
@@ -45,7 +45,7 @@ class DataStore {
       {
         id: 'tsk-202',
         title: 'Design API Contract',
-        description: 'Specify Users and Tasks endpoints, methods, and status codes for Chapter 3',
+        description: 'Specify Users and Tasks endpoints, HTTP methods, and status codes',
         status: 'DONE',
         priority: 'HIGH',
         assignedUserId: 'usr-101',
@@ -56,7 +56,7 @@ class DataStore {
       {
         id: 'tsk-203',
         title: 'Build Docker Container',
-        description: 'Create Dockerfile, .dockerignore, and test port mapping for Chapter 4',
+        description: 'Create Dockerfile, .dockerignore, and configure port mapping for containerized service',
         status: 'IN_PROGRESS',
         priority: 'HIGH',
         assignedUserId: 'usr-102',

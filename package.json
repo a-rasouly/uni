@@ -1,7 +1,7 @@
 {
   "name": "task-manager-backend",
   "version": "1.0.0",
-  "description": "Backend API for University Software Engineering Course - Tasks and Users Service",
+  "description": "Task and User Management REST API Service built with Node.js and Express",
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
@@ -16,7 +16,8 @@
     "rest-api",
     "docker",
     "express",
-    "university-project"
+    "nodejs",
+    "backend"
   ],
   "author": "a-rasouly",
   "license": "UNLICENSED",

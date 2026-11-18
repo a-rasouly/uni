@@ -1,85 +1,42 @@
 # Task Management Backend Service
 
 > **Repository:** `a-rasouly/uni`  
-> **Course:** Software Engineering Coursework / System Lab  
-> **Topic:** RESTful API Design, Git Flow & Branching, Docker Containerization, and Automated Verification
+> **Tech Stack:** Node.js, Express, Docker, REST API
+
+A modular, production-ready RESTful backend service for managing tasks and user assignments. Designed with clean architecture, containerized with Docker, covered by automated integration tests, and documented with a formal API contract.
 
 ---
 
 ## Table of Contents
 
-1. [Chapter 2: Git Flow, Branching, Commits & Pull Request](#chapter-2-git-flow-branching-commits--pull-request)
-2. [Chapter 3: API Contract Design & System Architecture](#chapter-3-api-contract-design--system-architecture)
-3. [Chapter 4: Containerization with Docker & Port Mapping](#chapter-4-containerization-with-docker--port-mapping)
-4. [Local Development & Automated Testing](#local-development--automated-testing)
+- [Features](#features)
+- [System Architecture](#system-architecture)
+- [API Specification](#api-specification)
+- [Docker & Containerization](#docker--containerization)
+- [Git Workflow & Branching](#git-workflow--branching)
+- [Local Development & Testing](#local-development--testing)
 
 ---
 
-## Chapter 2: Git Flow, Branching, Commits & Pull Request
+## Features
 
-### Requirements & Fulfillment
-- [x] **Repository Creation:** Repository initialized under `a-rasouly/uni`.
-- [x] **Feature Branching:** Dedicated feature branch created: `feature/task-management-api`.
-- [x] **Meaningful Commits:** At least 3 meaningful commits created following the Conventional Commits specification.
-- [x] **Pull Request Simulation:** Pull Request created comparing `feature/task-management-api` against `main`.
-
-### Git Commit History
-
-The repository commit tree demonstrates clean, modular progression:
-
-```text
-* e44cabb - ci(docker): add Dockerfile, .dockerignore and docker-compose orchestration (Chapter 4)
-* 3edc873 - feat(api): implement Users and Tasks REST API with automated tests
-* 137f5fc - docs(api): add API Contract and System Architecture Diagram (Chapter 3)
-* 0052672 - chore: initial repository setup with base documentation
-* 7702086 - Initial commit
-```
-
-### Pull Request Details
-
-- **Base Branch:** `main`
-- **Compare Branch:** `feature/task-management-api`
-- **Title:** `feat: Implement Users & Tasks Backend, API Contract, and Dockerization (Chapters 2, 3, 4)`
-- **PR URL:** [GitHub Compare & Pull Request](https://github.com/a-rasouly/uni/compare/main...feature/task-management-api?expand=1)
+- **User Management:** Full CRUD operations for system users with role and unique email validation.
+- **Task Management:** Lifecycle tracking (`TODO`, `IN_PROGRESS`, `DONE`), priority levels (`LOW`, `MEDIUM`, `HIGH`), due dates, and user assignments with foreign key integrity.
+- **RESTful Contract:** Predictable endpoints following HTTP semantics and standard status codes.
+- **Containerized Deployment:** Alpine-based Docker image with non-root security execution and automated health monitoring.
+- **Automated Test Suite:** Built-in integration tests with 100% route and status code coverage.
 
 ---
 
-## Chapter 3: API Contract Design & System Architecture
+## System Architecture
 
-### 1. Domain Resources
-
-The application models two core domain resources:
-1. **`Users`**: System users who create or are assigned work items (`id`, `name`, `email`, `role`, `createdAt`).
-2. **`Tasks`**: Actionable work items with lifecycle tracking (`id`, `title`, `description`, `status`, `priority`, `assignedUserId`, `dueDate`, `createdAt`, `updatedAt`).
-
-### 2. Initial API Contract Table
-
-Base URL: `http://localhost:3000/api/v1`
-
-| # | Resource | Method | Endpoint | Description | Success Status | Error Statuses |
-|---|---|---|---|---|---|---|
-| 1 | **System** | `GET` | `/health` | Health check and uptime probe | `200 OK` | `500 Internal Error` |
-| 2 | **Users** | `GET` | `/api/v1/users` | List all users | `200 OK` | `500 Internal Error` |
-| 3 | **Users** | `GET` | `/api/v1/users/:id` | Get single user by ID | `200 OK` | `404 Not Found`, `400 Bad Request` |
-| 4 | **Users** | `POST` | `/api/v1/users` | Register a new user | `201 Created` | `400 Bad Request`, `409 Conflict` |
-| 5 | **Users** | `PUT` | `/api/v1/users/:id` | Update existing user details | `200 OK` | `400 Bad Request`, `404 Not Found` |
-| 6 | **Users** | `DELETE` | `/api/v1/users/:id` | Remove user & unassign tasks | `204 No Content` | `404 Not Found` |
-| 7 | **Tasks** | `GET` | `/api/v1/tasks` | List tasks (supports query filters) | `200 OK` | `500 Internal Error` |
-| 8 | **Tasks** | `GET` | `/api/v1/tasks/:id` | Get single task by ID | `200 OK` | `404 Not Found` |
-| 9 | **Tasks** | `POST` | `/api/v1/tasks` | Create a new task | `201 Created` | `400 Bad Request`, `404 Not Found` |
-| 10 | **Tasks** | `PUT` | `/api/v1/tasks/:id` | Full update of task | `200 OK` | `400 Bad Request`, `404 Not Found` |
-| 11 | **Tasks** | `PATCH` | `/api/v1/tasks/:id/status` | Update task lifecycle status | `200 OK` | `400 Bad Request`, `404 Not Found` |
-| 12 | **Tasks** | `DELETE` | `/api/v1/tasks/:id` | Delete task | `204 No Content` | `404 Not Found` |
-
-> Full schema definitions, constraints, and JSON payload examples are documented in [`API_CONTRACT.md`](./API_CONTRACT.md).
-
-### 3. System Architecture Diagram
+The service utilizes a layered architecture within a containerized environment:
 
 ```mermaid
 flowchart TD
     subgraph Client["Client Layer"]
-        Browser["Web Browser (UI)"]
-        Postman["API Client (Postman / cURL)"]
+        Browser["Web Applications / Client UI"]
+        Postman["API Clients (Postman / cURL)"]
     end
 
     subgraph Host["Host Machine"]
@@ -123,72 +80,99 @@ flowchart TD
 
 ---
 
-## Chapter 4: Containerization with Docker & Port Mapping
+## API Specification
 
-### 1. Container Structure
-- **`Dockerfile`**: Built on lightweight `node:20-alpine`, enforces a non-root security user (`USER node`), caches production dependencies, exposes port `3000`, and includes an automated `HEALTHCHECK`.
-- **`.dockerignore`**: Excludes host-specific artifacts (`node_modules`, `.git`, `.env`, temporary files) to optimize build context and image size.
-- **`docker-compose.yml`**: Provides multi-container orchestration capabilities and reproducible local deployment.
+Base URL: `http://localhost:3000/api/v1`
 
-### 2. Build Docker Image Command
-Run the following command from the project root:
+### Endpoints Overview
+
+| # | Resource | Method | Endpoint | Description | Success Status | Error Statuses |
+|---|---|---|---|---|---|---|
+| 1 | **System** | `GET` | `/health` | Service health status check | `200 OK` | `500 Internal Error` |
+| 2 | **Users** | `GET` | `/api/v1/users` | List all users | `200 OK` | `500 Internal Error` |
+| 3 | **Users** | `GET` | `/api/v1/users/:id` | Get single user by ID | `200 OK` | `404 Not Found`, `400 Bad Request` |
+| 4 | **Users** | `POST` | `/api/v1/users` | Register a new user | `201 Created` | `400 Bad Request`, `409 Conflict` |
+| 5 | **Users** | `PUT` | `/api/v1/users/:id` | Update existing user details | `200 OK` | `400 Bad Request`, `404 Not Found` |
+| 6 | **Users** | `DELETE` | `/api/v1/users/:id` | Remove user & unassign tasks | `204 No Content` | `404 Not Found` |
+| 7 | **Tasks** | `GET` | `/api/v1/tasks` | List tasks (supports query filters) | `200 OK` | `500 Internal Error` |
+| 8 | **Tasks** | `GET` | `/api/v1/tasks/:id` | Get single task by ID | `200 OK` | `404 Not Found` |
+| 9 | **Tasks** | `POST` | `/api/v1/tasks` | Create a new task | `201 Created` | `400 Bad Request`, `404 Not Found` |
+| 10 | **Tasks** | `PUT` | `/api/v1/tasks/:id` | Full update of task | `200 OK` | `400 Bad Request`, `404 Not Found` |
+| 11 | **Tasks** | `PATCH` | `/api/v1/tasks/:id/status` | Update task status | `200 OK` | `400 Bad Request`, `404 Not Found` |
+| 12 | **Tasks** | `DELETE` | `/api/v1/tasks/:id` | Delete task | `204 No Content` | `404 Not Found` |
+
+> Detailed schemas, parameters, and sample request/response JSON payloads are available in [`API_CONTRACT.md`](./API_CONTRACT.md).
+
+---
+
+## Docker & Containerization
+
+### Docker Configuration
+- **Base Image:** `node:20-alpine` (minimal attack surface, small footprint).
+- **Security:** Runs under unprivileged user `node`.
+- **Healthcheck:** Automatic container health monitoring via `wget` spider on `/health`.
+- **Port Mapping:** Exposes port `3000` mapped to host port `3000`.
+
+### Container Commands
+
 ```bash
+# 1. Build Docker image
 docker build -t task-backend:latest .
-```
 
-### 3. Run Container with Port Mapping Command
-Run the container in detached mode mapping host port `3000` to container port `3000`:
-```bash
+# 2. Run container with port mapping
 docker run -d -p 3000:3000 --name task-app task-backend:latest
-```
 
-### 4. Container Inspection Commands
-```bash
-# Verify running container status and port mapping
+# 3. Check container status
 docker ps
 
-# Inspect live application server logs
+# 4. View application logs
 docker logs task-app
-```
 
-### 5. Verify Endpoints via Port Mapping
-Test the endpoints using `curl` against the exposed host port:
-```bash
-# 1. Health check verification
+# 5. Verify API endpoints via curl
 curl http://localhost:3000/health
-
-# 2. Retrieve all users
 curl http://localhost:3000/api/v1/users
-
-# 3. Create a new task
-curl -X POST http://localhost:3000/api/v1/tasks \
-  -H "Content-Type: application/json" \
-  -d '{"title": "Verify Docker Containerization", "status": "IN_PROGRESS", "priority": "HIGH", "assignedUserId": "usr-101"}'
-
-# 4. Retrieve all tasks
 curl http://localhost:3000/api/v1/tasks
-```
 
-### 6. Stop and Cleanup Container
-```bash
+# 6. Stop and remove container
 docker stop task-app
 docker rm task-app
 ```
 
+### Docker Compose
+For unified local execution, run:
+```bash
+docker compose up -d
+```
+
 ---
 
-## Local Development & Automated Testing
+## Git Workflow & Branching
+
+The project follows standard Git Flow conventions:
+- **`main`**: Production-ready, stable codebase.
+- **`feature/task-management-api`**: Dedicated feature branch containing modular, atomic commits.
+- **Commit Conventions:** Follows the [Conventional Commits](https://www.conventionalcommits.org/) specification (`feat:`, `docs:`, `ci:`, `chore:`).
+
+---
+
+## Local Development & Testing
+
+### Prerequisites
+- Node.js >= 20.0.0
+- npm >= 10.0.0
+
+### Setup
 
 ```bash
 # Install dependencies
 npm install
 
-# Run automated test suite (14 passing tests, 100% pass rate)
+# Run automated test suite (14 passing tests)
 npm test
 
-# Run server with live reload
+# Run application in development mode with live watch
 npm run dev
 
-# Run server in standard mode
+# Run application in production mode
 npm start
 ```
