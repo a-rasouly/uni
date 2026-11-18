@@ -1,5 +1,5 @@
 # ==========================================
-# University Coursework - Chapter 4 (فصل ۴)
+# University Coursework - Chapter 4
 # Task Management Backend Dockerfile
 # ==========================================
 
