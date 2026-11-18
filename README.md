@@ -1,100 +1,112 @@
-# پروژه درس مهندسی نرم‌افزار / آزمایشگاه سیستم (University Coursework)
-> **مخزن پروژه:** `a-rasouly/uni`  
-> **موضوع پروژه:** پیاده‌سازی سرویس بک‌اند مدیریت وظایف (Task & User Management Service)، طراحی قرارداد API، داکرایز کردن و مدیریت گیت
+# Task Management Backend Service
+
+> **Repository:** `a-rasouly/uni`  
+> **Course:** Software Engineering Coursework / System Lab  
+> **Topic:** RESTful API Design, Git Flow & Branching, Docker Containerization, and Automated Verification
 
 ---
 
-## فهرست فعالیت‌ها (Table of Activities)
+## Table of Contents
 
-1. [فصل ۲: گیت و گیت‌هاب (Git Flow, Branches, Commits & PR)](#فصل-۲-فعالیت-کلاسی-فصل-۲)
-2. [فصل ۳: طراحی قرارداد API و معماری سیستم (API Contract & Architecture Diagram)](#فصل-۳-فعالیت-کلاسی-فصل-۳)
-3. [فصل ۴: کانتینریزه کردن با داکر (Dockerization, Port Mapping & Execution)](#فصل-۴-فعالیت-کلاسی-فصل-۴)
+1. [Chapter 2: Git Flow, Branching, Commits & Pull Request](#chapter-2-git-flow-branching-commits--pull-request)
+2. [Chapter 3: API Contract Design & System Architecture](#chapter-3-api-contract-design--system-architecture)
+3. [Chapter 4: Containerization with Docker & Port Mapping](#chapter-4-containerization-with-docker--port-mapping)
+4. [Local Development & Automated Testing](#local-development--automated-testing)
 
 ---
 
-## فصل ۲: فعالیت کلاسی فصل ۲
+## Chapter 2: Git Flow, Branching, Commits & Pull Request
 
-### نیازمندی‌های این فصل
-- [x] ساخت یک مخزن جدید (`a-rasouly/uni`)
-- [x] ایجاد برنچ برای قابلیت‌ها (`feature/task-management-api`)
-- [x] ثبت حداقل ۳ کامیت معنادار بر اساس استاندارد Conventional Commits
-- [x] شبیه‌سازی و ایجاد یک Pull Request (PR)
+### Requirements & Fulfillment
+- [x] **Repository Creation:** Repository initialized under `a-rasouly/uni`.
+- [x] **Feature Branching:** Dedicated feature branch created: `feature/task-management-api`.
+- [x] **Meaningful Commits:** At least 3 meaningful commits created following the Conventional Commits specification.
+- [x] **Pull Request Simulation:** Pull Request created comparing `feature/task-management-api` against `main`.
 
-### تاریخچه کامیت‌های ثبت شده (Commit History)
-1. `chore: initial repository setup with base documentation` (برنچ `main`)
-2. `docs(api): add API Contract and System Architecture Diagram (Chapter 3)`
-3. `feat(api): implement Users and Tasks REST API with automated tests`
-4. `ci(docker): add Dockerfile, .dockerignore, docker-compose and CI pipeline (Chapter 4)`
-5. `docs: update comprehensive project documentation for Chapters 2, 3 and 4`
+### Git Commit History
 
-### نحوه شبیه‌سازی Pull Request
-برای ترکیب تغییرات برنچ ویژگی (`feature/task-management-api`) به برنچ اصلی (`main`)، درخواست پول ریکوئست به صورت زیر روی مخزن ثبت شده است:
+The repository commit tree demonstrates clean, modular progression:
+
+```text
+* e44cabb - ci(docker): add Dockerfile, .dockerignore and docker-compose orchestration (Chapter 4)
+* 3edc873 - feat(api): implement Users and Tasks REST API with automated tests
+* 137f5fc - docs(api): add API Contract and System Architecture Diagram (Chapter 3)
+* 0052672 - chore: initial repository setup with base documentation
+* 7702086 - Initial commit
+```
+
+### Pull Request Details
+
 - **Base Branch:** `main`
 - **Compare Branch:** `feature/task-management-api`
-- **PR Title:** `feat: Implement Users & Tasks Backend, API Contract, and Dockerization (Chapters 2, 3, 4)`
+- **Title:** `feat: Implement Users & Tasks Backend, API Contract, and Dockerization (Chapters 2, 3, 4)`
+- **PR URL:** [GitHub Compare & Pull Request](https://github.com/a-rasouly/uni/compare/main...feature/task-management-api?expand=1)
 
 ---
 
-## فصل ۳: فعالیت کلاسی فصل ۳
+## Chapter 3: API Contract Design & System Architecture
 
-### ۱. منابع پروژه (Resources)
-دو منبع اصلی در سیستم تعریف شده‌اند:
-1. **`Users`**: شامل شناسه، نام، ایمیل، نقش (`admin` / `member`) و تاریخ ساخت.
-2. **`Tasks`**: شامل شناسه، عنوان، توضیحات، وضعیت (`TODO`, `IN_PROGRESS`, `DONE`)، اولویت (`LOW`, `MEDIUM`, `HIGH`)، شناسه کاربر ارجاع داده شده (`assignedUserId`) و موعد تحویل (`dueDate`).
+### 1. Domain Resources
 
-### ۲. جدول طراحی اندپوینت‌ها (API Contract Table)
+The application models two core domain resources:
+1. **`Users`**: System users who create or are assigned work items (`id`, `name`, `email`, `role`, `createdAt`).
+2. **`Tasks`**: Actionable work items with lifecycle tracking (`id`, `title`, `description`, `status`, `priority`, `assignedUserId`, `dueDate`, `createdAt`, `updatedAt`).
 
-| ردیف | منبع (Resource) | متد HTTP | اندپوینت (Endpoint) | شرح عملکرد | کد وضعیت موفق | کدهای وضعیت خطا |
+### 2. Initial API Contract Table
+
+Base URL: `http://localhost:3000/api/v1`
+
+| # | Resource | Method | Endpoint | Description | Success Status | Error Statuses |
 |---|---|---|---|---|---|---|
-| ۱ | **System** | `GET` | `/health` | بررسی سلامت سرویس | `200 OK` | `500 Internal Error` |
-| ۲ | **Users** | `GET` | `/api/v1/users` | دریافت لیست تمام کاربران | `200 OK` | `500 Internal Error` |
-| ۳ | **Users** | `GET` | `/api/v1/users/:id` | دریافت اطلاعات یک کاربر | `200 OK` | `404 Not Found`, `400 Bad Request` |
-| ۴ | **Users** | `POST` | `/api/v1/users` | ساخت کاربر جدید | `201 Created` | `400 Bad Request`, `409 Conflict` |
-| ۵ | **Users** | `PUT` | `/api/v1/users/:id` | به‌روزرسانی مشخصات کاربر | `200 OK` | `400 Bad Request`, `404 Not Found` |
-| ۶ | **Users** | `DELETE` | `/api/v1/users/:id` | حذف کاربر | `204 No Content` | `404 Not Found` |
-| ۷ | **Tasks** | `GET` | `/api/v1/tasks` | لیست وظایف (با فیلتر status/priority/userId) | `200 OK` | `500 Internal Error` |
-| ۸ | **Tasks** | `GET` | `/api/v1/tasks/:id` | دریافت اطلاعات یک وظیفه | `200 OK` | `404 Not Found` |
-| ۹ | **Tasks** | `POST` | `/api/v1/tasks` | ساخت وظیفه جدید | `201 Created` | `400 Bad Request`, `404 Not Found (user)` |
-| ۱۰ | **Tasks** | `PUT` | `/api/v1/tasks/:id` | ویرایش کامل وظیفه | `200 OK` | `400 Bad Request`, `404 Not Found` |
-| ۱۱ | **Tasks** | `PATCH` | `/api/v1/tasks/:id/status` | تغییر وضعیت کار (`TODO`/`IN_PROGRESS`/`DONE`) | `200 OK` | `400 Bad Request`, `404 Not Found` |
-| ۱۲ | **Tasks** | `DELETE` | `/api/v1/tasks/:id` | حذف وظیفه | `204 No Content` | `404 Not Found` |
+| 1 | **System** | `GET` | `/health` | Health check and uptime probe | `200 OK` | `500 Internal Error` |
+| 2 | **Users** | `GET` | `/api/v1/users` | List all users | `200 OK` | `500 Internal Error` |
+| 3 | **Users** | `GET` | `/api/v1/users/:id` | Get single user by ID | `200 OK` | `404 Not Found`, `400 Bad Request` |
+| 4 | **Users** | `POST` | `/api/v1/users` | Register a new user | `201 Created` | `400 Bad Request`, `409 Conflict` |
+| 5 | **Users** | `PUT` | `/api/v1/users/:id` | Update existing user details | `200 OK` | `400 Bad Request`, `404 Not Found` |
+| 6 | **Users** | `DELETE` | `/api/v1/users/:id` | Remove user & unassign tasks | `204 No Content` | `404 Not Found` |
+| 7 | **Tasks** | `GET` | `/api/v1/tasks` | List tasks (supports query filters) | `200 OK` | `500 Internal Error` |
+| 8 | **Tasks** | `GET` | `/api/v1/tasks/:id` | Get single task by ID | `200 OK` | `404 Not Found` |
+| 9 | **Tasks** | `POST` | `/api/v1/tasks` | Create a new task | `201 Created` | `400 Bad Request`, `404 Not Found` |
+| 10 | **Tasks** | `PUT` | `/api/v1/tasks/:id` | Full update of task | `200 OK` | `400 Bad Request`, `404 Not Found` |
+| 11 | **Tasks** | `PATCH` | `/api/v1/tasks/:id/status` | Update task lifecycle status | `200 OK` | `400 Bad Request`, `404 Not Found` |
+| 12 | **Tasks** | `DELETE` | `/api/v1/tasks/:id` | Delete task | `204 No Content` | `404 Not Found` |
 
-> مستندات فنی و نمونه‌های JSON دقیق در فایل [`API_CONTRACT.md`](./API_CONTRACT.md) قرار دارند.
+> Full schema definitions, constraints, and JSON payload examples are documented in [`API_CONTRACT.md`](./API_CONTRACT.md).
 
-### ۳. دیاگرام معماری سیستم (Architecture Diagram)
+### 3. System Architecture Diagram
 
 ```mermaid
 flowchart TD
-    subgraph Client["لایه کلاینت (Clients)"]
-        Browser["مرورگر وب (Web Browser)"]
-        Postman["کلاینت تست API (Postman / cURL)"]
+    subgraph Client["Client Layer"]
+        Browser["Web Browser (UI)"]
+        Postman["API Client (Postman / cURL)"]
     end
 
-    subgraph Host["سیستم میزبان (Host Machine)"]
-        PortMap["Port Mapping (-p 3000:3000)"]
+    subgraph Host["Host Machine"]
+        PortMap["Port Mapping: Host 3000 -> Container 3000"]
     end
 
-    subgraph Container["کانتینر داکر (Docker Container: task-backend)"]
-        subgraph Middlewares["پشته میان‌افزارها (Middlewares)"]
+    subgraph Container["Docker Container (task-backend)"]
+        subgraph Middlewares["Express Middleware Stack"]
             JSONParser["JSON Body Parser"]
             Logger["HTTP Request Logger"]
             ErrHandler["Global Error Handler"]
         end
 
-        subgraph Routes["مسیریاب‌ها (Routers)"]
+        subgraph Routes["Routing Layer"]
             HealthR["/health"]
             UsersR["/api/v1/users"]
             TasksR["/api/v1/tasks"]
         end
 
-        subgraph Controllers["کنترلرها (Controllers)"]
+        subgraph Controllers["Controller Layer"]
             UserCtrl["User Controller"]
             TaskCtrl["Task Controller"]
         end
 
-        subgraph Store["لایه داده (In-Memory Repository)"]
-            UserDB["مخزن کاربران (Users Map)"]
-            TaskDB["مخزن تسک‌ها (Tasks Map)"]
+        subgraph Store["Data Layer (In-Memory Repository)"]
+            UserDB["Users Store"]
+            TaskDB["Tasks Store"]
         end
     end
 
@@ -106,57 +118,58 @@ flowchart TD
     TasksR --> TaskCtrl
     UserCtrl --> UserDB
     TaskCtrl --> TaskDB
-    TaskCtrl -.->|اعتبارسنجی کاربر ارجاع‌شده| UserDB
+    TaskCtrl -.->|Validates FK| UserDB
 ```
 
 ---
 
-## فصل ۴: فعالیت کلاسی فصل ۴
+## Chapter 4: Containerization with Docker & Port Mapping
 
-### ۱. ساختار فایل‌های داکر
-- **`Dockerfile`**: مبتنی بر تصویر بهینه `node:20-alpine`، تعریف کاربر غیر ریشه `node`، کپی نیازمندی‌ها، تنظیم متغیرهای محیطی، مانیتورینگ سلامت با `HEALTHCHECK` و اکسپوز پورت `3000`.
-- **`.dockerignore`**: جلوگیری از ارسال فایل‌های حجیم و حساس مانند `node_modules`، `.git`، لاگ‌ها و متغیرهای محلی به کانتینر.
-- **`docker-compose.yml`**: تسهیل اجرای محلی چندسرویسی با نگاشت خودکار پورت.
+### 1. Container Structure
+- **`Dockerfile`**: Built on lightweight `node:20-alpine`, enforces a non-root security user (`USER node`), caches production dependencies, exposes port `3000`, and includes an automated `HEALTHCHECK`.
+- **`.dockerignore`**: Excludes host-specific artifacts (`node_modules`, `.git`, `.env`, temporary files) to optimize build context and image size.
+- **`docker-compose.yml`**: Provides multi-container orchestration capabilities and reproducible local deployment.
 
-### ۲. دستورات ساخت ایمیج داکر (Build Image)
-در دایرکتوری اصلی پروژه، دستور زیر را اجرا کنید:
+### 2. Build Docker Image Command
+Run the following command from the project root:
 ```bash
 docker build -t task-backend:latest .
 ```
 
-### ۳. دستور اجرای کانتینر با نگاشت پورت (Port Mapping)
-کانتینر را در پس‌زمینه با متناظر کردن پورت ۳۰۰۰ سیستم میزبان به پورت ۳۰۰۰ داخل کانتینر اجرا کنید:
+### 3. Run Container with Port Mapping Command
+Run the container in detached mode mapping host port `3000` to container port `3000`:
 ```bash
 docker run -d -p 3000:3000 --name task-app task-backend:latest
 ```
 
-### ۴. بررسی وضعیت کانتینر و لاگ‌ها
+### 4. Container Inspection Commands
 ```bash
-# مشاهده کانتینرهای در حال اجرا
+# Verify running container status and port mapping
 docker ps
 
-# مشاهده لاگ‌های وب‌سرور داخل کانتینر
+# Inspect live application server logs
 docker logs task-app
 ```
 
-### ۵. تست فراخوانی اندپوینت‌ها از طریق پورت مپینگ
+### 5. Verify Endpoints via Port Mapping
+Test the endpoints using `curl` against the exposed host port:
 ```bash
-# تست سلامت سرور
+# 1. Health check verification
 curl http://localhost:3000/health
 
-# دریافت لیست کاربران
+# 2. Retrieve all users
 curl http://localhost:3000/api/v1/users
 
-# ساخت یک تسک جدید
+# 3. Create a new task
 curl -X POST http://localhost:3000/api/v1/tasks \
   -H "Content-Type: application/json" \
-  -d '{"title": "تست داکر کانتینر", "status": "IN_PROGRESS", "priority": "HIGH", "assignedUserId": "usr-101"}'
+  -d '{"title": "Verify Docker Containerization", "status": "IN_PROGRESS", "priority": "HIGH", "assignedUserId": "usr-101"}'
 
-# دریافت لیست تسک‌ها
+# 4. Retrieve all tasks
 curl http://localhost:3000/api/v1/tasks
 ```
 
-### ۶. توقف و پاکسازی کانتینر
+### 6. Stop and Cleanup Container
 ```bash
 docker stop task-app
 docker rm task-app
@@ -164,18 +177,18 @@ docker rm task-app
 
 ---
 
-## اجرای محلی بدون داکر (Local Development)
+## Local Development & Automated Testing
 
 ```bash
-# نصب پکیج‌ها
+# Install dependencies
 npm install
 
-# اجرای تست‌های خودکار (۱۴ تست با پوشش ۱۰۰٪)
+# Run automated test suite (14 passing tests, 100% pass rate)
 npm test
 
-# اجرای سرور در حالت توسعه
+# Run server with live reload
 npm run dev
 
-# اجرای سرور در حالت نرمال
+# Run server in standard mode
 npm start
 ```

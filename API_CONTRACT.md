@@ -1,9 +1,9 @@
 # API Contract & System Architecture
-## Coursework Activity - Chapter 3 (فعالیت کلاسی فصل ۳)
+## Coursework Activity - Chapter 3
 
 ---
 
-## 1. Project Resources (شناسایی منابع پروژه)
+## 1. Project Resources
 
 The system identifies two primary domain resources:
 1. **Users (`User`)**: Represents system members who create or are assigned tasks.
@@ -35,7 +35,7 @@ The system identifies two primary domain resources:
 
 ---
 
-## 2. API Endpoints Specification (جدول طراحی اندپوینت‌ها)
+## 2. API Endpoints Specification
 
 Base URL: `http://localhost:3000/api/v1`
 
@@ -86,7 +86,7 @@ Base URL: `http://localhost:3000/api/v1`
 ```json
 {
   "title": "Set up CI/CD pipeline",
-  "description": "Configure GitHub Actions workflow for automated testing and docker build",
+  "description": "Configure automated testing and container build workflow",
   "status": "TODO",
   "priority": "HIGH",
   "assignedUserId": "usr-101",
@@ -100,7 +100,7 @@ Base URL: `http://localhost:3000/api/v1`
   "data": {
     "id": "tsk-1731960000000",
     "title": "Set up CI/CD pipeline",
-    "description": "Configure GitHub Actions workflow for automated testing and docker build",
+    "description": "Configure automated testing and container build workflow",
     "status": "TODO",
     "priority": "HIGH",
     "assignedUserId": "usr-101",
@@ -113,7 +113,7 @@ Base URL: `http://localhost:3000/api/v1`
 
 ---
 
-## 4. System Architecture Diagram (دیاگرام معماری سیستم)
+## 4. System Architecture Diagram
 
 ```mermaid
 flowchart TD
